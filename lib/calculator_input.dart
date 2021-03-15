@@ -17,113 +17,6 @@ class _CalculatorInputState extends State<CalculatorInput> {
   //   return (a * b);
   // }
 
-  dynamic textSelected = '0';
-  double numOne = 0;
-  double numTwo = 0;
-
-  dynamic result = '';
-  dynamic finalResult = '';
-  dynamic operation = '';
-  dynamic preOperation = '';
-
-  String containDecimal(dynamic result) {
-    if (result.toString().contains('.')) {
-      List<String> splitDecimal = result.toString().split('.');
-      if (!(int.parse(splitDecimal[1]) > 0))
-        return result = splitDecimal[0].toString();
-    }
-    return result;
-  }
-
-  String add() {
-    result = (numOne + numTwo).toString();
-    numOne = double.parse(result);
-    return containDecimal(result);
-  }
-
-  String sub() {
-    result = (numOne - numTwo).toString();
-    numOne = double.parse(result);
-    return containDecimal(result);
-  }
-
-  String mul() {
-    result = (numOne * numTwo).toString();
-    numOne = double.parse(result);
-    return containDecimal(result);
-  }
-
-  String div() {
-    result = (numOne / numTwo).toString();
-    numOne = double.parse(result);
-    return containDecimal(result);
-  }
-
-  void calculation(textBtn) {
-    if (textBtn == 'AC') {
-      textSelected = '0';
-      numOne = 0;
-      numTwo = 0;
-      result = '';
-      finalResult = '';
-      operation = '';
-      preOperation = '';
-    } else if (operation == '=' && textBtn == '=') {
-      if (preOperation == '+') {
-        finalResult = add();
-      } else if (preOperation == '-') {
-        finalResult = sub();
-      } else if (preOperation == 'x') {
-        finalResult = mul();
-      } else if (preOperation == '÷') {
-        finalResult = div();
-      }
-    } else if (textBtn == '+' ||
-        textBtn == '-' ||
-        textBtn == 'x' ||
-        textBtn == '÷') {
-      if (numOne == 0) {
-        numOne = double.parse(result);
-      } else {
-        numTwo = double.parse(result);
-      }
-
-      if (operation == '+') {
-        finalResult = add();
-      } else if (operation == '-') {
-        finalResult = sub();
-      } else if (operation == 'x') {
-        finalResult = mul();
-      } else if (operation == '/') {
-        finalResult = div();
-      }
-
-      preOperation = operation;
-      operation = textBtn;
-      result = '';
-    } else if (textBtn == '%') {
-      result = numOne / 100;
-      finalResult = containDecimal(result);
-    } else if (textBtn == '.') {
-      if (!result.toString().contains('.')) {
-        result = result.toString() + '.';
-      }
-      finalResult = result;
-    } else if (textBtn == '+/-') {
-      result.toString().startsWith('-')
-          ? result = result.toString().substring(1)
-          : result = '-' + result.toString();
-      finalResult = result;
-    } else {
-      result = result + textBtn;
-      finalResult = result;
-
-      setState(() {
-        textSelected = finalResult;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -172,18 +65,18 @@ class _CalculatorInputState extends State<CalculatorInput> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  textSelected,
+                                  '308',
                                   style: TextStyle(fontSize: 30.0),
                                 ),
-                                // Text(
-                                //   ' x ',
-                                //   style: TextStyle(
-                                //       color: redColor, fontSize: 30.0),
-                                // ),
-                                // Text(
-                                //   '2',
-                                //   style: TextStyle(fontSize: 30.0),
-                                // )
+                                Text(
+                                  ' x ',
+                                  style: TextStyle(
+                                      color: redColor, fontSize: 30.0),
+                                ),
+                                Text(
+                                  '40',
+                                  style: TextStyle(fontSize: 30.0),
+                                )
                               ],
                             ),
                           ),
@@ -475,6 +368,7 @@ class _CalculatorInputState extends State<CalculatorInput> {
                           // crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
+                            //TODO: clean up the code, make the text button resuable
                             TextButton(
                               child: Icon(
                                 FontAwesomeIcons.undo,
@@ -534,4 +428,113 @@ class _CalculatorInputState extends State<CalculatorInput> {
           ]),
     ));
   }
+
+  //Logic for calculating
+
+  // dynamic textSelected = '0';
+  // double numOne = 0;
+  // double numTwo = 0;
+  //
+  // dynamic result = '';
+  // dynamic finalResult = '';
+  // dynamic operation = '';
+  // dynamic preOperation = '';
+  //
+  // String containDecimal(dynamic result) {
+  //   if (result.toString().contains('.')) {
+  //     List<String> splitDecimal = result.toString().split('.');
+  //     if (!(int.parse(splitDecimal[1]) > 0))
+  //       return result = splitDecimal[0].toString();
+  //   }
+  //   return result;
+  // }
+  //
+  // String add() {
+  //   result = (numOne + numTwo).toString();
+  //   numOne = double.parse(result);
+  //   return containDecimal(result);
+  // }
+  //
+  // String sub() {
+  //   result = (numOne - numTwo).toString();
+  //   numOne = double.parse(result);
+  //   return containDecimal(result);
+  // }
+  //
+  // String mul() {
+  //   result = (numOne * numTwo).toString();
+  //   numOne = double.parse(result);
+  //   return containDecimal(result);
+  // }
+  //
+  // String div() {
+  //   result = (numOne / numTwo).toString();
+  //   numOne = double.parse(result);
+  //   return containDecimal(result);
+  // }
+  //
+  // void calculation(textBtn) {
+  //   if (textBtn == 'AC') {
+  //     textSelected = '0';
+  //     numOne = 0;
+  //     numTwo = 0;
+  //     result = '';
+  //     finalResult = '';
+  //     operation = '';
+  //     preOperation = '';
+  //   } else if (operation == '=' && textBtn == '=') {
+  //     if (preOperation == '+') {
+  //       finalResult = add();
+  //     } else if (preOperation == '-') {
+  //       finalResult = sub();
+  //     } else if (preOperation == 'x') {
+  //       finalResult = mul();
+  //     } else if (preOperation == '÷') {
+  //       finalResult = div();
+  //     }
+  //   } else if (textBtn == '+' ||
+  //       textBtn == '-' ||
+  //       textBtn == 'x' ||
+  //       textBtn == '÷') {
+  //     if (numOne == 0) {
+  //       numOne = double.parse(result);
+  //     } else {
+  //       numTwo = double.parse(result);
+  //     }
+  //
+  //     if (operation == '+') {
+  //       finalResult = add();
+  //     } else if (operation == '-') {
+  //       finalResult = sub();
+  //     } else if (operation == 'x') {
+  //       finalResult = mul();
+  //     } else if (operation == '/') {
+  //       finalResult = div();
+  //     }
+  //
+  //     preOperation = operation;
+  //     operation = textBtn;
+  //     result = '';
+  //   } else if (textBtn == '%') {
+  //     result = numOne / 100;
+  //     finalResult = containDecimal(result);
+  //   } else if (textBtn == '.') {
+  //     if (!result.toString().contains('.')) {
+  //       result = result.toString() + '.';
+  //     }
+  //     finalResult = result;
+  //   } else if (textBtn == '+/-') {
+  //     result.toString().startsWith('-')
+  //         ? result = result.toString().substring(1)
+  //         : result = '-' + result.toString();
+  //     finalResult = result;
+  //   } else {
+  //     result = result + textBtn;
+  //     finalResult = result;
+  //
+  //     setState(() {
+  //       textSelected = finalResult;
+  //     });
+  //   }
+  // }
 }
