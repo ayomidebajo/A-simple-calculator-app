@@ -11,10 +11,186 @@ class CalculatorInput extends StatefulWidget {
 }
 
 class _CalculatorInputState extends State<CalculatorInput> {
-  // List<int> list = [];
+  dynamic selected = "";
+  dynamic num = "";
+  dynamic numOne = 0;
+  dynamic numTwo = 0;
+  dynamic symbol = "";
+  dynamic result = "";
+  dynamic output = "";
+
+  List selectedList = <String>[];
+  String selectedString = "";
+
+  bool onTap = false;
+
+  receiveTap(onTap, String no) {
+    if (onTap = true) {
+      print('yes, i was clicked!');
+      selectedList.add(no);
+      if (no == "=") {
+        selectedList.removeWhere((element) => element.contains("="));
+      }
+
+      print({selectedList.join(''), 'checks'});
+
+      num = selectedList.join('');
+
+      if (no == 'AC') {
+        num = '';
+        numOne = 0;
+        numTwo = 0;
+        output = '';
+        result = "";
+        symbol = "";
+        selectedList = [];
+        print('$num, checking empty');
+      } else if (no == '+' || no == "-" || no == "÷" || no == "x") {
+        numOne = double.parse(result);
+        print('$numOne, checking number one');
+        symbol = no;
+        output = "";
+      } else if (no == ".") {
+        if (output.contains(".")) {
+          print('Already contains');
+          return;
+        } else {
+          output = output + no;
+        }
+      } else if (no == "=") {
+        numTwo = double.parse(result);
+        print('$numTwo, checking number two');
+        // num.remove("=");
+
+        if (symbol == "+") {
+          output = (numOne + numTwo).toString();
+        }
+        if (symbol == "-") {
+          output = (numOne - numTwo).toString();
+        }
+        if (symbol == "x") {
+          output = (numOne * numTwo).toString();
+        }
+        if (symbol == "÷") {
+          output = (numOne / numTwo).toString();
+        }
+
+        numOne = 0;
+        numTwo = 0;
+        symbol = "";
+      } else if (no == "%") {
+        dynamic percent;
+        percent = num.split('%');
+        output = int.parse(percent[0]) / 100;
+      } else {
+        output = output + no;
+      }
+
+      String containDecimal(dynamic out) {
+        if (out.toString().contains('.')) {
+          List<String> splitDecimal = out.toString().split('.');
+
+          if (!(int.parse(splitDecimal[1]) > 0)) {
+            out = splitDecimal[0].toString();
+          }
+          if (!(int.parse(splitDecimal[1]) > 0 &&
+              (int.parse(splitDecimal[2])) > 0)) {
+            out = splitDecimal[0].toString();
+            print('$out with the stuff1');
+          }
+
+          output = out;
+        }
+        return output;
+      }
+
+      print('$output kilo shele');
+      // containDecimal(output);
+
+      setState(() {
+        result = output;
+      });
+
+      print(output.runtimeType);
+
+      // if (output.contains('.') && output.lastIndexOf('0')) {
+      //   print('$output, amebo');
+      // }
+    }
+  }
+
+  // resultFunction(String a) {
+  //   print('$a what happen');
+  //   if (a.contains('-')) {
+  //     print('$a it subtract');
+  //     print(a.split('-'));
+  //     print(a.split('.'));
+  //     List test = a.split('-');
+  //     print(test.length);
+  //     int firstValue = int.parse(test.firstWhere((i) => i.isNotEmpty));
   //
-  // int calc(a, b) {
-  //   return (a * b);
+  //     String first = firstValue.toString();
+  //
+  //     if (first.contains('.')) {
+  //       print(first.split('.'));
+  //       double.parse(first);
+  //     }
+  //     int secondValue =
+  //         int.parse(test.lastWhere((element) => element.isNotEmpty));
+  //     // int result;
+  //
+  //     // result = firstValue - secondValue;
+  //
+  //     print('$result, result don commot o');
+  //   } else if (a.contains('+') || a.contains('.')) {
+  //     print(a.split('+'));
+  //     print(a.split('.'));
+  //     List test = a.split('+');
+  //     int firstValue = int.parse(test.firstWhere((i) => i.isNotEmpty));
+  //     int secondValue =
+  //         int.parse(test.lastWhere((element) => element.isNotEmpty));
+  //
+  //     result = firstValue + secondValue;
+  //   } else if (a.contains('x') || a.contains('.')) {
+  //     print(a.split('x'));
+  //
+  //     List test = a.split('x');
+  //     int firstValue = int.parse(test.firstWhere((i) => i.isNotEmpty));
+  //     int secondValue =
+  //         int.parse(test.lastWhere((element) => element.isNotEmpty));
+  //
+  //     result = firstValue * secondValue;
+  //   } else if (a.contains('÷') || a.contains('.')) {
+  //     print(a.split('÷'));
+  //     print(a.split('.'));
+  //     List test = a.split('÷');
+  //     int firstValue = int.parse(test.firstWhere((i) => i.isNotEmpty));
+  //     int secondValue =
+  //         int.parse(test.lastWhere((element) => element.isNotEmpty));
+  //
+  //     result = firstValue / secondValue;
+  //   } else if (a.contains('%') || a.contains('.')) {
+  //     print(a.split('%'));
+  //     print(a.split('.'));
+  //     List test = a.split('%');
+  //     int firstValue =
+  //         int.parse(test.firstWhere((element) => element.isNotEmpty));
+  //
+  //     result = firstValue / 100;
+  //   } else if (a.contains('.')) {
+  //     print(a.split('.'));
+  //     List test = a.split('.');
+  //     int firstValue =
+  //         int.parse(test.firstWhere((element) => element.isNotEmpty));
+  //     int secondValue = int.parse(test.lastWhere((e) => e.isNotEmpty));
+  //
+  //     print('$test checking decimals');
+  //     if (a[1].contains('+')) {
+  //       result = firstValue + secondValue;
+  //     } else if (a[1].contains('-')) {}
+  //   }
+  //
+  //   print("$a checking");
   // }
 
   @override
@@ -65,18 +241,18 @@ class _CalculatorInputState extends State<CalculatorInput> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  '308',
+                                  num.toString(),
                                   style: TextStyle(fontSize: 30.0),
                                 ),
-                                Text(
-                                  ' x ',
-                                  style: TextStyle(
-                                      color: redColor, fontSize: 30.0),
-                                ),
-                                Text(
-                                  '40',
-                                  style: TextStyle(fontSize: 30.0),
-                                )
+                                // Text(
+                                //   symbol,
+                                //   style: TextStyle(
+                                //       color: redColor, fontSize: 30.0),
+                                // ),
+                                // Text(
+                                //   numOne.toString(),
+                                //   style: TextStyle(fontSize: 30.0),
+                                // )
                               ],
                             ),
                           ),
@@ -85,7 +261,7 @@ class _CalculatorInputState extends State<CalculatorInput> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                '12,936',
+                                result.toString(),
                                 style: TextStyle(
                                     fontSize: 50.0,
                                     fontWeight: FontWeight.w700),
@@ -119,7 +295,10 @@ class _CalculatorInputState extends State<CalculatorInput> {
                               ),
                               // style: ButtonStyle(sha),
                               onPressed: () {
-                                print('AC');
+                                setState(() {
+                                  onTap = !onTap;
+                                  receiveTap(onTap, "AC");
+                                });
                               },
                             ),
                             TextButton(
@@ -130,7 +309,11 @@ class _CalculatorInputState extends State<CalculatorInput> {
                                 textAlign: TextAlign.center,
                               ),
                               onPressed: () {
-                                print('+/-');
+                                // print('+/-');
+                                setState(() {
+                                  onTap = !onTap;
+                                  receiveTap(onTap, '+/-');
+                                });
                               },
                             ),
                             TextButton(
@@ -141,7 +324,11 @@ class _CalculatorInputState extends State<CalculatorInput> {
                                 textAlign: TextAlign.center,
                               ),
                               onPressed: () {
-                                print('%');
+                                // print('%');
+                                setState(() {
+                                  onTap = !onTap;
+                                  receiveTap(onTap, '%');
+                                });
                               },
                             ),
                             TextButton(
@@ -154,7 +341,11 @@ class _CalculatorInputState extends State<CalculatorInput> {
                                     color: redColor),
                               ),
                               onPressed: () {
-                                print('÷');
+                                // print('÷');
+                                setState(() {
+                                  onTap = !onTap;
+                                  receiveTap(onTap, '÷');
+                                });
                               },
                             ),
                           ],
@@ -181,6 +372,8 @@ class _CalculatorInputState extends State<CalculatorInput> {
                                   // calc(8, 7);
                                   // print(arr);
                                   // selected = NumberType.seven;
+                                  onTap = !onTap;
+                                  receiveTap(onTap, '7');
                                 });
                               },
                             ),
@@ -198,6 +391,8 @@ class _CalculatorInputState extends State<CalculatorInput> {
                                 // print('8');
                                 setState(() {
                                   // selected = NumberType.eight;
+                                  onTap = !onTap;
+                                  receiveTap(onTap, '8');
                                 });
                               },
                             ),
@@ -212,7 +407,10 @@ class _CalculatorInputState extends State<CalculatorInput> {
                                 ),
                               ),
                               onPressed: () {
-                                print('9');
+                                setState(() {
+                                  onTap = !onTap;
+                                  receiveTap(onTap, '9');
+                                });
                               },
                             ),
                             TextButton(
@@ -225,7 +423,10 @@ class _CalculatorInputState extends State<CalculatorInput> {
                                     color: redColor),
                               ),
                               onPressed: () {
-                                // print('x');
+                                setState(() {
+                                  onTap = !onTap;
+                                  receiveTap(onTap, 'x');
+                                });
                               },
                             ),
                           ],
@@ -249,7 +450,10 @@ class _CalculatorInputState extends State<CalculatorInput> {
                                 ),
                               ),
                               onPressed: () {
-                                print('4');
+                                setState(() {
+                                  onTap = !onTap;
+                                  receiveTap(onTap, '4');
+                                });
                               },
                             ),
                             TextButton(
@@ -263,7 +467,10 @@ class _CalculatorInputState extends State<CalculatorInput> {
                                 ),
                               ),
                               onPressed: () {
-                                print('5');
+                                setState(() {
+                                  onTap = !onTap;
+                                  receiveTap(onTap, '5');
+                                });
                               },
                             ),
                             TextButton(
@@ -277,7 +484,10 @@ class _CalculatorInputState extends State<CalculatorInput> {
                                 ),
                               ),
                               onPressed: () {
-                                print('6');
+                                setState(() {
+                                  onTap = !onTap;
+                                  receiveTap(onTap, '6');
+                                });
                               },
                             ),
                             TextButton(
@@ -290,7 +500,10 @@ class _CalculatorInputState extends State<CalculatorInput> {
                                     color: redColor),
                               ),
                               onPressed: () {
-                                print('-');
+                                setState(() {
+                                  onTap = !onTap;
+                                  receiveTap(onTap, '-');
+                                });
                               },
                             ),
                           ],
@@ -314,7 +527,10 @@ class _CalculatorInputState extends State<CalculatorInput> {
                                 ),
                               ),
                               onPressed: () {
-                                print('1');
+                                setState(() {
+                                  onTap = !onTap;
+                                  receiveTap(onTap, '1');
+                                });
                               },
                             ),
                             TextButton(
@@ -328,7 +544,10 @@ class _CalculatorInputState extends State<CalculatorInput> {
                                 ),
                               ),
                               onPressed: () {
-                                print('2');
+                                setState(() {
+                                  onTap = !onTap;
+                                  receiveTap(onTap, '2');
+                                });
                               },
                             ),
                             TextButton(
@@ -342,7 +561,10 @@ class _CalculatorInputState extends State<CalculatorInput> {
                                 ),
                               ),
                               onPressed: () {
-                                print('3');
+                                setState(() {
+                                  onTap = !onTap;
+                                  receiveTap(onTap, '3');
+                                });
                               },
                             ),
                             TextButton(
@@ -355,7 +577,11 @@ class _CalculatorInputState extends State<CalculatorInput> {
                                     color: redColor),
                               ),
                               onPressed: () {
-                                print('+');
+                                setState(() {
+                                  onTap = !onTap;
+                                  receiveTap(onTap, '+');
+                                  // add(selected);
+                                });
                               },
                             ),
                           ],
@@ -387,7 +613,10 @@ class _CalculatorInputState extends State<CalculatorInput> {
                                 ),
                               ),
                               onPressed: () {
-                                print('0');
+                                setState(() {
+                                  onTap = !onTap;
+                                  receiveTap(onTap, '0');
+                                });
                               },
                             ),
                             TextButton(
@@ -401,7 +630,10 @@ class _CalculatorInputState extends State<CalculatorInput> {
                                 ),
                               ),
                               onPressed: () {
-                                print('.');
+                                setState(() {
+                                  onTap = !onTap;
+                                  receiveTap(onTap, '.');
+                                });
                               },
                             ),
                             TextButton(
@@ -414,7 +646,11 @@ class _CalculatorInputState extends State<CalculatorInput> {
                                     color: redColor),
                               ),
                               onPressed: () {
-                                print('=');
+                                setState(() {
+                                  onTap = !onTap;
+                                  // receiveTap(onTap, '=');
+                                  receiveTap(onTap, "=");
+                                });
                               },
                             ),
                           ],
